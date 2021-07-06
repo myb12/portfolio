@@ -110,21 +110,22 @@
 
 @section('script')
 <script type="text/javascript">
- function editAbout(id) {
-                 $.ajax({
-                 url:"{{route('edit_about')}}",
-                 method:"POST",
-                 data:{'id':id ,'_token': '{{csrf_token()}}'},
-                 dataType:'JSON',
-                 success:function(response){
-                    $('#edit-form').html(response.data)
-                    $('#editModal').modal('show')
-                 },
-                 error:function(jqr,execption){
 
-                }
+async function editAbout(id){
+          const res = await fetch('{{route('edit_about')}}', 
+          { 
+            method: 'POST',
+            headers : { 
+                       'Content-Type': 'application/json'
+                       },
+            body:JSON.stringify({'id':id ,'_token': '{{csrf_token()}}'})
             });
-        }
+
+            const data =await res.json();
+
+            $('#edit-form').html(data.data)
+            $('#editModal').modal('show')
+      }
 </script>
 @endsection
 <!-- /.content-wrapper -->

@@ -165,24 +165,24 @@
 
 @section('script')
 <script>
-              function editService(id) {
-                 $.ajax({
-                 url:"{{route('edit_service')}}",
-                 method:"POST",
-                 data:{'id':id ,'_token': '{{csrf_token()}}'},
-                 dataType:'JSON',
-                 success:function(response){
-                    $('#id_edit').val(response.data.id)
-                    $('#title_edit').val(response.data.title)
-                    $('#icon_edit').val(response.data.icon)
-                    $('#editModal').modal('show')
-                 },
-                 error:function(jqr,execption){
+       async function editService(id){
 
-                }
+          const res = await fetch('{{route('edit_service')}}', 
+          { 
+            method: 'POST',
+            headers : { 
+                       'Content-Type': 'application/json'
+                       },
+            body:JSON.stringify({'id':id ,'_token': '{{csrf_token()}}'})
             });
 
-        }
+            const data =await res.json();
+
+            $('#id_edit').val(data.data.id)
+            $('#title_edit').val(data.data.title)
+            $('#icon_edit').val(data.data.icon)
+            $('#editModal').modal('show')
+    }
 </script>
 @endsection
 <!-- /.content-wrapper -->

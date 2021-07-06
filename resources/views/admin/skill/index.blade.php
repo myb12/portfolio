@@ -45,7 +45,7 @@
                   <td>{{$skill->title}}</td>
                   <td>{{$skill->percentage}}%</td>
                   <td>
-                  <a href="javaScript:void(0)" class="btn btn-icon btn-warning mr-1 btn-sm" onclick="editSkill({{$skill->id}})"><i class="fa fa-edit"></i></a>
+                  <a href="javaScript:void(0)" class="btn mr-1 btn-warning " onclick="editSkill({{$skill->id}})"><i class="fa fa-edit"></i></a>
                   
                     <a href="javascript:void(0)" class="btn btn-danger" onclick="
                     if (confirm('are you sure to delete?')) {
@@ -165,24 +165,48 @@
 
 @section('script')
 <script>
-              function editSkill(id) {
-                 $.ajax({
-                 url:"{{route('edit_skill')}}",
-                 method:"POST",
-                 data:{'id':id ,'_token': '{{csrf_token()}}'},
-                 dataType:'JSON',
-                 success:function(response){
-                    // $('#edit-form').html(response.data)
-                    $('#id_edit').val(response.data.id)
-                    $('#title_edit').val(response.data.title)
-                    $('#percentage_edit').val(response.data.percentage)
-                    $('#editModal').modal('show')
-                 },
-                 error:function(jqr,execption){
+        //       function editSkill(id) {
+        //          $.ajax({
+        //          url:"{{route('edit_skill')}}",
+        //          method:"POST",
+        //          data:{'id':id ,'_token': '{{csrf_token()}}'},
+        //          dataType:'JSON',
+        //          success:function(response){
+        //             // $('#edit-form').html(response.data)
+        //             $('#id_edit').val(response.data.id)
+        //             $('#title_edit').val(response.data.title)
+        //             $('#percentage_edit').val(response.data.percentage)
+        //             $('#editModal').modal('show')
+        //          },
+        //          error:function(jqr,execption){
 
-                }
+        //         }
+        //     });
+
+        // }
+
+
+
+
+
+
+
+        async function editSkill(id){
+          const res = await fetch('{{route('edit_skill')}}', 
+          { 
+            method: 'POST',
+            headers : { 
+                       'Content-Type': 'application/json'
+                       },
+            body:JSON.stringify({'id':id ,'_token': '{{csrf_token()}}'})
             });
 
+          const data =await res.json();
+          $('#id_edit').val(data.data.id)
+          $('#title_edit').val(data.data.title)
+          $('#percentage_edit').val(data.data.percentage)
+          $('#editModal').modal('show')
+          // console.log(data);
         }
 </script>
 @endsection

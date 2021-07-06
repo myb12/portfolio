@@ -216,25 +216,25 @@
 
 @section('script')
 <script>
-              function editContact(id) {
-                 $.ajax({
-                 url:"{{route('edit_contact')}}",
-                 method:"POST",
-                 data:{'id':id ,'_token': '{{csrf_token()}}'},
-                 dataType:'JSON',
-                 success:function(response){
-                    $('#id_edit').val(response.data.id)
-                    $('#phone_edit').val(response.data.phone)
-                    $('#email_edit').val(response.data.email)
-                    $('#facebook_edit').val(response.data.facebook)
-                    $('#linkedin_edit').val(response.data.linkedin)
-                    $('#git_edit').val(response.data.git)
-                    $('#editModal').modal('show')
-                 },
-                 error:function(jqr,execption){
-
-                }
+        async function editContact(id) {
+          const res = await fetch('{{route('edit_contact')}}', 
+          { 
+            method: 'POST',
+            headers : { 
+                       'Content-Type': 'application/json'
+                       },
+            body:JSON.stringify({'id':id ,'_token': '{{csrf_token()}}'})
             });
+
+            const data =await res.json();
+                
+            $('#id_edit').val(data.data.id)
+            $('#phone_edit').val(data.data.phone)
+            $('#email_edit').val(data.data.email)
+            $('#facebook_edit').val(data.data.facebook)
+            $('#linkedin_edit').val(data.data.linkedin)
+            $('#git_edit').val(data.data.git)
+            $('#editModal').modal('show')
 
         }
 </script>
